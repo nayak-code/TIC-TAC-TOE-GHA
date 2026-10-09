@@ -23,5 +23,14 @@ jobs:
 
       - name: Trivy file scan
         run: trivy fs . > trivyfs.txt
+
+      - name: Docker build and push
+        run: |
+          docker build -t tic-game .
+          docker tag tic-game dockernyk/tic-game:latest
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker push dockernyk/tic-game:latest
+        env:
+          DOCKER_CLI_ACI: 1
         
 
